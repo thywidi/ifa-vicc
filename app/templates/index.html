@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }} - Microblog</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static',filename='dist/css/output.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <h1 class="text-blue-800 text-4xl">Hello, {{ user.bla }}!</h1>
+    <h1>Hello, {{ user.home }}!</h1>
+    <div class="flex gap-4 font-bold">
+      {% for item in parkingSpots %}
+      <div class="bg-slate-400 p-4 mb-6">
+        <h1 class="text-red-800 text-4xl mt-10 uppercase">
+          Hello, {{ user.bla }}!
+        </h1>
+      </div>
+      {% endfor %}
+    </div>
+    <p>You have posts{{costs}}!</p>
+  </body>
+</html>
