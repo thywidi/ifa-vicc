@@ -1,0 +1,31 @@
+services:
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  db:
+    restart: always
+    image: postgres
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db:/var/lib/posgresql
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+  flask:
+    build: .
+    image: flask
+    container_name: flask
+    depends_on:
+      - "db"
