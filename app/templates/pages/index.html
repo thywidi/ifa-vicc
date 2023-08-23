@@ -1,0 +1,9 @@
+{% extends "base.html" %} 
+{% block content %}
+<div class="flex gap-4 font-bold">
+  {% for item in parkingSpots %}
+    {% include 'components/spot.html' %}
+  {% endfor %}
+</div>
+<p>You have posts{{costs}}!</p>
+{% endblock %}

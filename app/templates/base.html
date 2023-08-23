@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% if title %}
+    <title>Parking Reservation - {{ title }}</title>
+    {% else %}
+    <title>Parking Reservation</title>
+    {% endif %}
+    <link
+      rel="stylesheet"
+      href="{{url_for('static',filename='dist/css/tailwind.css')}}"
+    />
+  </head>
+  <body>
+    {% include 'components/header.html' %}
+    <div>{% block content %}{% endblock %}</div>
+    {% include 'components/footer.html' %}
+  </body>
+</html>
