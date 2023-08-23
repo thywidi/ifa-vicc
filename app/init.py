@@ -2,6 +2,8 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
+products = ["about", "contact", "index", "login"]
+
 
 @app.route("/")
 @app.route("/index")
@@ -12,6 +14,7 @@ def home():
     return render_template(
         "pages/index.html",
         title="Home",
+        products=products,
         user=user,
         income=income,
         parkingSpots=parkingSpots,
@@ -23,6 +26,7 @@ def login():
     return render_template(
         "pages/login.html",
         title="Login",
+        products=products,
     )
 
 
