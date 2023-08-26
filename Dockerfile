@@ -1,5 +1,20 @@
 FROM python:slim
-COPY ./app /app
-WORKDIR /app
-RUN pip install --upgrade pip && ls -lisa /app && pip install -r /app/requirements.txt --no-cache-dir
-CMD gunicorn -w 4 --bind 0.0.0.0:5000 wsgi:app
+RUN useradd parking
+WORKDIR /parking
+
+
+COPY requirements.txt requirements.txt
+RUN python -m venv venv
+RUN venv/bin/pip install -r requirements.txt
+
+COPY app app
+COPY migrations migrations
+COPY parking.py config.py boot.sh ./
+RUN chmod a+x boot.sh
+
+ENV FLASK_APP parking.py
+
+RUN chown -R parking:parking ./
+USER parking
+
+ENTRYPOINT ["./boot.sh"]

@@ -1,9 +1,4 @@
 services:
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
   db:
     restart: always
     image: postgres
