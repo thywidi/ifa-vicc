@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="hero min-h-screen bg-base-200">
+    <div class="hero flex-grow bg-base-200">
         <div class="hero-content flex-col gap-12 lg:flex-row-reverse">
             <div class="text-center lg:text-left">
                 <h1 class="text-5xl font-bold">Login now!</h1>
                 <p class="py-6">
-                    Please login to use the application. This is a demo application. You can use the existing username <strong>user</strong> with the password <strong>login!1234</strong>. Or you can register a new user
+                    Please login to use the applicaton. As a logged in user you can make parking spot reservations. If you dont have an account yet, register below
                 </p>
                 <a class="btn btn-secondary mt-r text-sm"
                    href="{{ url_for("auth.register") }}">Register</a>

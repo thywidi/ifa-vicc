@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
+  <head class="min-h-screen">
     {% if title %}
     <title>Parking Reservation - {{ title }}</title>
     {% else %}
@@ -11,8 +11,8 @@
       href="{{url_for('static',filename='dist/css/tailwind.css')}}"
     />
   </head>
-  <body>
+  <body class="flex flex-col min-h-screen">
     {% include 'components/flash.html' %} {% include 'components/header.html' %}
-    <div>{% block content %}{% endblock %}</div>
+    <div class="flex-grow flex flex-col">{% block content %}{% endblock %}</div>
   </body>
 </html>

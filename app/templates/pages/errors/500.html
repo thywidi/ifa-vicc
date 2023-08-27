@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="hero flex-grow bg-base-200">
+        <div class="hero-content text-center">
+            <div class="max-w-md">
+                <h1 class="text-5xl font-bold">Error</h1>
+                <p class="py-6">
+                    Unfortunately an error occoured, please try again by reloading the page
+                    or return to start
+                </p>
+                <a href="{{ url_for("parking.index") }}" class="btn btn-primary">To start</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

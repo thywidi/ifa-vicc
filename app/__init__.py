@@ -1,12 +1,16 @@
-from flask import Flask, render_template
+import logging
+import os
+from logging.handlers import RotatingFileHandler
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager, login_required
+from flask_login import LoginManager
 from config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
+login.login_view = "auth.login"  # type: ignore
 
 
 def create_app(test_config=None):
@@ -24,6 +28,14 @@ def create_app(test_config=None):
     migrate.init_app(app, db)
     login.init_app(app)
 
+    from app.errors import bp as errors_bp
+
+    app.register_blueprint(errors_bp)
+
+    from app.parking import bp as parking_bp
+
+    app.register_blueprint(parking_bp)
+
     from app.auth import bp as auth_bp
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
@@ -32,14 +44,28 @@ def create_app(test_config=None):
 
     app.register_blueprint(api_bp, url_prefix="/api")
 
-    @app.route("/")
-    @app.route("/index")
-    @login_required
-    def home():
-        return render_template(
-            "pages/index.html",
-            title="Home",
-        )
+    if not app.debug:
+        if app.config["LOG_TO_STDOUT"]:
+            stream_handler = logging.StreamHandler()
+            stream_handler.setLevel(logging.INFO)
+            app.logger.addHandler(stream_handler)
+        else:
+            if not os.path.exists("logs"):
+                os.mkdir("logs")
+            file_handler = RotatingFileHandler(
+                "logs/parking.log", maxBytes=10240, backupCount=10
+            )
+            file_handler.setFormatter(
+                logging.Formatter(
+                    "%(asctime)s %(levelname)s: %(message)s "
+                    "[in %(pathname)s:%(lineno)d]"
+                )
+            )
+            file_handler.setLevel(logging.INFO)
+            app.logger.addHandler(file_handler)
+
+        app.logger.setLevel(logging.INFO)
+        app.logger.info("App startup")
 
     return app
 

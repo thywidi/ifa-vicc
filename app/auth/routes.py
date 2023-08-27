@@ -11,7 +11,7 @@ from app import db
 def login():
     if current_user.is_authenticated:  # type: ignore
         flash("Already logged in")
-        return redirect(url_for("index"))
+        return redirect(url_for("parking.index"))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -22,7 +22,7 @@ def login():
         login_user(user)
         next = request.args.get("next")
         if not next or url_parse(next).netloc != "":
-            next = url_for("index")
+            next = url_for("parking.index")
         return redirect(next)
     return render_template("pages/login.html", title="Sign In", form=form)
 
@@ -30,13 +30,13 @@ def login():
 @bp.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for("index"))
+    return redirect(url_for("parking.index"))
 
 
 @bp.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:  # type: ignore
-        return redirect(url_for("index"))
+        return redirect(url_for("parking.index"))
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data)  # type: ignore

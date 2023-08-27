@@ -34,7 +34,7 @@ class RegistrationForm(FlaskForm):
         render_kw={"class": "input input-bordered"},
     )
     passwordRepeat = PasswordField(
-        "Repat Password",
+        "Repeat Password",
         validators=[DataRequired(), EqualTo("password")],
         render_kw={"class": "input input-bordered"},
     )

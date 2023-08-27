@@ -1,9 +1,12 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% block content %}
-<div class="flex gap-4 font-bold">
-  {% for item in parkingSpots %}
-    {% include 'components/spot.html' %}
-  {% endfor %}
-</div>
-<p>You have posts{{costs}}!</p>
+    <div class="flex-grow py-10 px-20">
+        <div class="flex w-full">
+            <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">content</div>
+            <div class="divider divider-horizontal"></div>
+            <div class="grid card bg-base-300 rounded-box place-items-center">
+                <div>{% include 'components/calendar.html' %}</div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
