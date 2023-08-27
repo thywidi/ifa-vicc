@@ -2,7 +2,7 @@
 {% import 'components/calendarday.html' as calendarday %}
 <div class="flex-none px-8 py-10">
     <div class="flex items-center text-center">
-        <div class="flex-auto text-sm font-semibold">{{ month }} {{ year }}</div>
+        <div class="flex-auto text-lg font-semibold">{{ month }} {{ year }}</div>
     </div>
     <div class="mt-6 grid grid-cols-7 text-center text-xs leading-6">
         <div>M</div>
@@ -13,7 +13,7 @@
         <div>S</div>
         <div>S</div>
     </div>
-    <div class="isolate mt-2 grid grid-cols-7 gap-px text-sm shadow ring-1 ring-gray-200">
+    <div class="isolate mt-2 grid grid-cols-7 gap-px text-sm shadow ring-1 ring-neutral">
         {% for week in weeks %}
             {% for entry in week %}
                 {% set isToday = false %}

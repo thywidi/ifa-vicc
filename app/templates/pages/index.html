@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="flex-grow py-10 px-20">
-        <div class="flex w-full">
-            <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">content</div>
+    <div class="flex-grow py-10 px-20 flex flex-col">
+        <div class="flex w-full flex-grow">
+            <div class="grid flex-grow min-h-full card bg-base-300 rounded-box place-items-center">
+                <div>{% include 'components/parking.html' %}</div>
+            </div>
             <div class="divider divider-horizontal"></div>
-            <div class="grid card bg-base-300 rounded-box place-items-center">
+            <div class="card bg-base-300 rounded-box flex flex-col justify-center items-center">
+                <h3 class="text-2xl">Calendar</h3>
                 <div>{% include 'components/calendar.html' %}</div>
             </div>
         </div>

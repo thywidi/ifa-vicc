@@ -19,5 +19,5 @@ def index():
         year=year,
         month=month,
         today=datetime.date.today().day,
-        weeks=Calendar.get_days(month),
+        weeks=Calendar.get_days(month, year),
     )

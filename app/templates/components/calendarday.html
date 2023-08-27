@@ -1,7 +1,7 @@
 <!-- vim: set filetype=htmldjango : -->
 {% macro calendarday(day, today=False, currentMonth=False ) -%}
     <button type="button"
-            class="{{'bg-gray-300' if not currentMonth else 'bg-white'}} py-1.5 {{'text-gray-400' if not today else 'text-indigo-600'}} hover:bg-gray-100 focus:z-10">
-        <time class="mx-auto flex h-7 w-7 items-center justify-center rounded-full">{{ day }}</time>
+            class="{{'bg-base-300' if not currentMonth else 'bg-base-100'}} px-2 py-1.5 {{'text-gray-400' if not today else 'text-white'}} hover:bg-gray-100 focus:z-10">
+        <time class="mx-auto flex h-10 w-10 items-center justify-center rounded-full {{'bg-info' if today }}">{{ day }}</time>
     </button>
 {%- endmacro %}
