@@ -1,11 +1,15 @@
 <div class="navbar bg-base-100">
   <div class="flex-1">
-    <a class="btn btn-ghost normal-case text-xl">daisyUI</a>
+    <a class="btn btn-ghost normal-case text-xl">ParkingManager</a>
   </div>
   <div class="flex-none">
     <ul class="menu menu-horizontal px-1">
       <li><a>Accounting</a></li>
-      <li><a href="/auth/login">Login</a></li>
+      {% if current_user.is_anonymous %}
+      <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+      {% else %}
+      <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+      {% endif %}
     </ul>
   </div>
 </div>

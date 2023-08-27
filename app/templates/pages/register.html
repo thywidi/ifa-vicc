@@ -3,12 +3,12 @@
     <div class="hero min-h-screen bg-base-200">
         <div class="hero-content flex-col gap-12 lg:flex-row-reverse">
             <div class="text-center lg:text-left">
-                <h1 class="text-5xl font-bold">Login now!</h1>
+                <h1 class="text-5xl font-bold">Register Here</h1>
                 <p class="py-6">
-                    Please login to use the application. This is a demo application. You can use the existing username <strong>user</strong> with the password <strong>login!1234</strong>. Or you can register a new user
+                    Register as a new user. Choose a username and set your password. If you alrady have a user, login below
                 </p>
                 <a class="btn btn-secondary mt-r text-sm"
-                   href="{{ url_for("auth.register") }}">Register</a>
+                   href="{{ url_for("auth.login") }}">Login</a>
             </div>
             <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                 <div class="card-body">
@@ -27,6 +27,15 @@
                             {{ form.password.label }}
                             {{ form.password(size=32) }}
                             {% for error in form.password.errors %}
+                                <label class="label">
+                                    <span class="text-red-400 label-text-alt">{{ error }}</span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                        <div class="form-control mt-3">
+                            {{ form.passwordRepeat.label }}
+                            {{ form.passwordRepeat(size=32) }}
+                            {% for error in form.passwordRepeat.errors %}
                                 <label class="label">
                                     <span class="text-red-400 label-text-alt">{{ error }}</span>
                                 </label>
