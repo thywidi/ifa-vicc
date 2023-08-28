@@ -4,5 +4,6 @@ module.exports = {
   theme: {
     extend: {},
   },
+  safelist: ["alert-info", "alert-error"],
   plugins: [require("daisyui")],
 };

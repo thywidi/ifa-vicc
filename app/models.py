@@ -16,6 +16,9 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def reservation(self, date):
+        return self.reservations.filter_by(date=date).first()
+
     def __repr__(self):
         return f"<User {self.username}>"
 
@@ -34,7 +37,7 @@ class ParkingSpot(db.Model):
     )
 
     def is_reserved(self, date):
-        return self.reservations.filter_by(date=date).first() is not None
+        return self.reservations.filter_by(date=date).first()
 
     def reserve(self, date, user):
         if not self.is_reserved(date):

@@ -1,7 +1,7 @@
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from sqlalchemy import select
-from app.models import ParkingSpot, Reservation
+from app.models import ParkingSpot, Reservation, User
 from app import db
 from app.parking import bp
 from app.parking.calendar import ParkingCalendar
@@ -59,15 +59,34 @@ def date(date):
 @login_required
 def reserve(spot, day):
     form = BaseForm()
+    today = datetime.date.today()
+    dayDate = datetime.datetime.fromisoformat(day).date()
     if form.validate_on_submit():
+        if dayDate < today:
+            flash("Cannot make reservations in the past")
+            return redirect(url_for("parking.index"))
+
         # TODO: Error handling and testing
         spot = ParkingSpot.query.filter_by(id=spot).first()
+
         if spot is None:
             flash(f"Spot {spot} not found.")
             return redirect(url_for("parking.index"))
+
+        user = User.query.filter_by(id=current_user.id).first()  # type: ignore
+        if user is None:
+            raise ValueError("User not found")
+
+        if user.reservation(dayDate):
+            flash(
+                "Cannot reserve spot. You can only have 1 reservaton per day", "error"
+            )
+            return redirect(url_for("parking.index"))
+
         spot.reserve(day, current_user)
-        db.session.commit()
         flash(f"Spot {spot} reserved!")
+        db.session.commit()
+
         return redirect(url_for("parking.index"))
     else:
         return redirect(url_for("parking.index"))
@@ -77,7 +96,13 @@ def reserve(spot, day):
 @login_required
 def free(spot, day):
     form = BaseForm()
+    today = datetime.date.today()
+    dayDate = datetime.datetime.fromisoformat(day).date()
     if form.validate_on_submit():
+        if dayDate < today:
+            flash("Cannot make changes to reservations in the past")
+            return redirect(url_for("parking.index"))
+
         # TODO: Error handling and testing
         spot = ParkingSpot.query.filter_by(id=spot).first()
         if spot is None:
@@ -103,7 +128,13 @@ def accounting():
     occupied = len(list(filter(lambda x: x.is_reserved(today), spots)))
     occupation = (occupied / spotCount) * 100
 
-    reservations = db.session.scalars(select(Reservation).join(ParkingSpot)).all()
+    reservations = db.session.scalars(
+        select(Reservation)
+        .filter(Reservation.date <= today)
+        .join(ParkingSpot)
+        .join(User)
+    ).all()
+
     revenue = sum(map(lambda x: x.parking_spot.price, reservations))
 
     return render_template(
