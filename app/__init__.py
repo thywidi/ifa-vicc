@@ -5,6 +5,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from sqlalchemy import select
 from config import Config
 
 db = SQLAlchemy()
@@ -27,6 +28,8 @@ def create_app(test_config=None):
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
+
+    from app import models
 
     from app.errors import bp as errors_bp
 
@@ -67,7 +70,16 @@ def create_app(test_config=None):
         app.logger.setLevel(logging.INFO)
         app.logger.info("App startup")
 
+    with app.app_context():
+        # Create all database tables
+        db.create_all()
+
+        # TODO: This is to handle currently out of scope admin functionality.
+        if not db.session.execute(select(models.ParkingSpot)).first():
+            # Create default parking spots
+            for x in range(1, 11):
+                spot = models.ParkingSpot(id=x, price=5, info=f"Spot {x}")
+                db.session.add(spot)
+            db.session.commit()
+
     return app
-
-
-from app import models  # noqa: E402, F401
