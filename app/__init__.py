@@ -14,16 +14,12 @@ login = LoginManager()
 login.login_view = "auth.login"  # type: ignore
 
 
-def create_app(test_config=None):
+def create_app(config=Config):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
 
-    if test_config is None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_object(Config)
-    else:
-        # load the test config if passed in
-        app.config.from_mapping(test_config)
+    # We can override this, for tests for example
+    app.config.from_object(config)
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -47,7 +43,7 @@ def create_app(test_config=None):
 
     app.register_blueprint(api_bp, url_prefix="/api")
 
-    if not app.debug:
+    if not app.debug and not app.testing:
         if app.config["LOG_TO_STDOUT"]:
             stream_handler = logging.StreamHandler()
             stream_handler.setLevel(logging.INFO)
