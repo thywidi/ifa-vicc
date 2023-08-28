@@ -16,16 +16,25 @@
     <div class="isolate mt-2 grid grid-cols-7 gap-px text-sm shadow ring-1 ring-neutral">
         {% for week in weeks %}
             {% for entry in week %}
-                {% set isToday = false %}
+                {% set isCurrentDay = false %}
                 {% if entry.day == activeDate.day %}
-                    {% set isToday = true %}
+                    {% set isCurrentDay = True %}
                 {% endif %}
                 {% set isCurrentMonth = False %}
                 {% if entry.month == month %}
                     {% set isCurrentMonth = true %}
                 {% endif %}
-                {{ calendarday.calendarday(entry, today=isToday, currentMonth=isCurrentMonth) }}
+                {{ calendarday.calendarday(entry, today, currentDay=isCurrentDay, currentMonth=isCurrentMonth) }}
             {% endfor %}
         {% endfor %}
+    </div>
+    <div class="mt-4 flex flex-col gap-2 items-center">
+        <p class="text-neutral-content">Today</p>
+        <p class="text-info">Selected</p>
+    </div>
+    <div class="mt-4 flex flex-col gap-2 items-center">
+        <p class="text-sm text-center">
+            Select on which day you would like to make a reservation. Only possible for the current month. At the end of the month HR will subtract reservation cost from your salary and you can make reservations for the next month
+        </p>
     </div>
 </div>

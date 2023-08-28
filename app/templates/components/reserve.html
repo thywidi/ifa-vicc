@@ -1,9 +1,9 @@
-{% macro reserve(id, is_reserved, day, form) -%} {% if is_reserved == True %}
-<form action="{{url_for('parking.free', spot=id, day=day)}}" method="post">
+{% macro reserve(id, is_reserved, date, form) -%} {% if is_reserved == True %}
+<form action="{{url_for('parking.free', spot=id, day=date)}}" method="post">
   {{ form.hidden_tag() }} {{ form.submit(value='Free') }}
 </form>
 {% else %}
-<form action="{{url_for('parking.reserve', spot=id, day=day)}}" method="post">
+<form action="{{url_for('parking.reserve', spot=id, day=date )}}" method="post">
   {{ form.hidden_tag() }} {{ form.submit(value='Reserve') }}
 </form>
 {% endif %} {%- endmacro %}

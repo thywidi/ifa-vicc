@@ -1,4 +1,4 @@
-from flask import flash, redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, url_for, abort
 from flask_login import current_user, login_required
 from sqlalchemy import select
 from app.models import ParkingSpot, Reservation, User
@@ -28,6 +28,7 @@ def index():
         year=year,
         month=month,
         activeDate=today,
+        today=today,
         weeks=Calendar.get_days(month, year),
         spots=spots,
         form=form,
@@ -38,6 +39,11 @@ def index():
 @login_required
 def date(date):
     form = BaseForm()
+    activeDate = datetime.date.fromisoformat(date)
+    today = datetime.date.today()
+
+    if activeDate < today:
+        abort(404)
 
     year = datetime.date.today().year
     month = datetime.date.today().month
@@ -48,7 +54,8 @@ def date(date):
         title="Home",
         year=year,
         month=month,
-        activeDate=date,
+        today=today,
+        activeDate=activeDate,
         weeks=Calendar.get_days(month, year),
         spots=spots,
         form=form,
@@ -60,7 +67,7 @@ def date(date):
 def reserve(spot, day):
     form = BaseForm()
     today = datetime.date.today()
-    dayDate = datetime.datetime.fromisoformat(day).date()
+    dayDate = datetime.date.fromisoformat(day)
     if form.validate_on_submit():
         if dayDate < today:
             flash("Cannot make reservations in the past")
@@ -97,7 +104,7 @@ def reserve(spot, day):
 def free(spot, day):
     form = BaseForm()
     today = datetime.date.today()
-    dayDate = datetime.datetime.fromisoformat(day).date()
+    dayDate = datetime.date.fromisoformat(day)
     if form.validate_on_submit():
         if dayDate < today:
             flash("Cannot make changes to reservations in the past")
