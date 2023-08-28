@@ -67,9 +67,6 @@ def create_app(config=Config):
         app.logger.info("App startup")
 
     with app.app_context():
-        # Create all database tables
-        db.create_all()
-
         # TODO: This is to handle currently out of scope admin functionality.
         if not db.session.execute(select(models.ParkingSpot)).first():
             # Create default parking spots

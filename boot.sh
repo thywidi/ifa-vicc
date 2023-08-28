@@ -1,7 +1,7 @@
 #!/bin/bash
 # this script is used to boot a Docker container
 source venv/bin/activate
-while true; do
+for i in {1..6}; do
     flask db upgrade
     if [[ "$?" == "0" ]]; then
         break
