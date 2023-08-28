@@ -1,4 +1,7 @@
-<div class="bg-slate-400 p-4 mb-6">
-  <h1 class="text-blue-800 text-4xl mt-10 uppercase">Hello spot!</h1>
-  {% include 'components/button.html' %}
+{% import 'components/reserve.html' as reserverender %} {% macro spot(id,
+is_reserved, info, activeDate, form) -%}
+<div class="{{'bg-green-300' if not is_reserved else 'bg-red-300'}} p-4">
+  <h1 class="">{{id}}</h1>
+  {{ reserverender.reserve(id, is_reserved, activeDate, form) }}
 </div>
+{%- endmacro %}

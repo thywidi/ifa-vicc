@@ -77,7 +77,7 @@ def create_app(test_config=None):
         # TODO: This is to handle currently out of scope admin functionality.
         if not db.session.execute(select(models.ParkingSpot)).first():
             # Create default parking spots
-            for x in range(1, 11):
+            for x in range(1, 13):
                 spot = models.ParkingSpot(id=x, price=5, info=f"Spot {x}")
                 db.session.add(spot)
             db.session.commit()

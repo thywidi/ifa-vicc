@@ -1,6 +1,6 @@
 <!-- vim: set filetype=htmldjango : -->
 {% import 'components/calendarday.html' as calendarday %}
-<div class="flex-none px-8 py-10">
+<div class="flex-none">
     <div class="flex items-center text-center">
         <div class="flex-auto text-lg font-semibold">{{ month }} {{ year }}</div>
     </div>
@@ -17,14 +17,14 @@
         {% for week in weeks %}
             {% for entry in week %}
                 {% set isToday = false %}
-                {% if entry.day == today %}
+                {% if entry.day == activeDate.day %}
                     {% set isToday = true %}
                 {% endif %}
                 {% set isCurrentMonth = False %}
                 {% if entry.month == month %}
                     {% set isCurrentMonth = true %}
                 {% endif %}
-                {{ calendarday.calendarday(entry.day, today=isToday, currentMonth=isCurrentMonth) }}
+                {{ calendarday.calendarday(entry, today=isToday, currentMonth=isCurrentMonth) }}
             {% endfor %}
         {% endfor %}
     </div>

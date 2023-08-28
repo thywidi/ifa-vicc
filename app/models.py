@@ -1,4 +1,4 @@
-from app import db, login
+from app import db, login, logging
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -32,6 +32,21 @@ class ParkingSpot(db.Model):
     reservations = db.relationship(
         "Reservation", backref="parking_spot", lazy="dynamic"
     )
+
+    def is_reserved(self, date):
+        return self.reservations.filter_by(date=date).first() is not None
+
+    def reserve(self, date, user):
+        if not self.is_reserved(date):
+            self.reservations.append(Reservation(date=date, user=user))
+
+    def free(self, date, user):
+        userHasReservation = self.reservations.filter_by(date=date, user=user).first()
+        if userHasReservation:
+            self.reservations.remove(userHasReservation)
+            return True
+        else:
+            return False
 
     def __repr__(self):
         return f"<Parkingspot {self.id}>"

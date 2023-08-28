@@ -1,7 +1,10 @@
-{% with messages = get_flashed_messages() %} {% if messages %}
-<div class="toast toast-top toast-end top-20">
-  {% for message in messages %}
-  <div class="alert alert-info">
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+%}
+<div class="toast toast-top toast-end top-20 z-50">
+  {% for category, message in messages %}
+  <div
+    class="alert alert-{{'info' if not category == 'error' else 'error'}} p-4"
+  >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
