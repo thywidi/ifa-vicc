@@ -8,12 +8,10 @@ Flask Application for module XXXX
 
 - [About the Project](#about-the-project)
   - [Features](#features)
-  - [Demo](#demo)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-- [Usage](#usage)
-- [Contact](#contact)
+- [Testing](#testing)
 
 ## About the Project
 
