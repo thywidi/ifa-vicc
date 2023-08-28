@@ -39,9 +39,12 @@ def index():
 @login_required
 def date(date):
     form = BaseForm()
-    activeDate = datetime.date.fromisoformat(date)
-    today = datetime.date.today()
+    try:
+        activeDate = datetime.date.fromisoformat(date)
+    except ValueError:
+        abort(404)
 
+    today = datetime.date.today()
     if activeDate < today:
         abort(404)
 

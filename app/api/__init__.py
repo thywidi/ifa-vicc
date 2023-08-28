@@ -2,4 +2,4 @@ from flask import Blueprint
 
 bp = Blueprint("api", __name__)
 
-from app.api import tokens, errors, posts, accounting  # noqa: E402, F401
+from app.api import tokens, errors, spots, accounting, reservations  # noqa: E402, F401

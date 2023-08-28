@@ -54,6 +54,13 @@ class User(UserMixin, db.Model):
     def reservation(self, date):
         return self.reservations.filter_by(date=date).first()
 
+    def to_dict(self):
+        data = {
+            "id": self.id,
+            "username": self.username,
+        }
+        return data
+
     def __repr__(self):
         return f"<User {self.username}>"
 

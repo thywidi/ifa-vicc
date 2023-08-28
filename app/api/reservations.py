@@ -11,7 +11,6 @@ def get_reservation(id):
 
 
 @bp.route("/reservations", methods=["GET"])
-@token_auth.login_required
 def get_reservations():
     data = Reservation.to_collection_dict(Reservation.query)
     return jsonify(data)
@@ -22,7 +21,7 @@ def get_reservations():
 def get_reservation_user(id):
     reservation = Reservation.query.get_or_404(id)
     user = User.query.get_or_404(reservation.user_id)
-    return jsonify(user)
+    return jsonify(user.to_dict())
 
 
 @bp.route("/reservations/<int:id>/get_reservation_spot", methods=["GET"])
@@ -30,4 +29,4 @@ def get_reservation_user(id):
 def get_reservation_spot(id):
     reservation = Reservation.query.get_or_404(id)
     spot = ParkingSpot.query.get_or_404(reservation.parking_spot_id)
-    return jsonify(spot)
+    return jsonify(spot.to_dict())
