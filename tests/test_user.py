@@ -7,3 +7,4 @@ class TestClass:
         u = User(username="susan")  # type: ignore
         u.set_password("cat")
         assert not u.check_password("dog")
+        assert u.check_password("cat")

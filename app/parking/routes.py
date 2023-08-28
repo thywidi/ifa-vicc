@@ -115,8 +115,10 @@ def free(spot, day):
         if spot is None:
             flash(f"Spot {spot} not found.")
             return redirect(url_for("parking.index"))
-        success = spot.free(day, current_user)
-        if success:
+
+        userReservation = spot.free(day, current_user)
+        if userReservation is not None:
+            db.session.delete(userReservation)
             db.session.commit()
             flash(f"Spot {spot} is now free!")
         else:
@@ -133,7 +135,7 @@ def accounting():
     spotCount = len(list(spots))
     today = datetime.date.today()
     occupied = len(list(filter(lambda x: x.is_reserved(today), spots)))
-    occupation = (occupied / spotCount) * 100
+    occupation = round((occupied / spotCount) * 100, 2)
 
     reservations = db.session.scalars(
         select(Reservation)

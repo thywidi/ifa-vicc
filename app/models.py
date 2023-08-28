@@ -79,12 +79,12 @@ class ParkingSpot(db.Model, CollectionMixin):
             self.reservations.append(Reservation(date=date, user=user))
 
     def free(self, date, user):
-        userHasReservation = self.reservations.filter_by(date=date, user=user).first()
-        if userHasReservation:
-            self.reservations.remove(userHasReservation)
-            return True
+        userReservation = self.reservations.filter_by(date=date, user=user).first()
+        if userReservation:
+            self.reservations.remove(userReservation)
+            return userReservation
         else:
-            return False
+            return None
 
     def to_dict(self):
         data = {

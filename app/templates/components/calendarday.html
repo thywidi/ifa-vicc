@@ -1,7 +1,7 @@
 <!-- vim: set filetype=htmldjango : -->
 {% macro calendarday(date, today, currentDay=False, currentMonth=False ) -%}
     {% set isToday = False %}
-    {% if date == today.day %}
+    {% if date.day == today.day %}
         {% set isToday = True %}
     {% endif %}
     {% set bg = "bg-base-300" %}
@@ -18,12 +18,11 @@
     {% if date >= today %}
         <a type="button"
            href="{{ url_for('parking.date', date=date) }}"
-           class="{{ bg }} px-2 py-1.5 {{'text-gray-400' if not currentDay and not isToday else 'text-white'}} hover:bg-base-300 focus:z-10">
+           class="{{ bg }} px-2 py-1.5 {{'text-gray-400' if not currentDay and not isToday else 'text-white'}} hover:bg-neutral focus:z-10">
             <time class="mx-auto flex h-10 w-10 items-center justify-center rounded-full {{ ringbg }}">{{ date.day }}</time>
         </a>
     {% else %}
-        <button type="button"
-                class="{{ bg }} px-2 py-1.5 text-gray-400 hover:bg-base-300 focus:z-10">
+        <button type="button" class="{{ bg }} px-2 py-1.5 text-gray-400">
             <time class="mx-auto flex h-10 w-10 items-center justify-center rounded-full">{{ date.day }}</time>
         </button>
     {% endif %}
