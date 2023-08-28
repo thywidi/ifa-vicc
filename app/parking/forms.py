@@ -3,4 +3,4 @@ from wtforms import SubmitField
 
 
 class BaseForm(FlaskForm):
-    submit = SubmitField("Submit", render_kw={"class": "btn btn-primary"})
+    submit = SubmitField("Submit", render_kw={"class": "btn btn-neutral"})

@@ -1,7 +1,7 @@
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from sqlalchemy import select
-from app.models import ParkingSpot
+from app.models import ParkingSpot, Reservation
 from app import db
 from app.parking import bp
 from app.parking.calendar import ParkingCalendar
@@ -92,3 +92,26 @@ def free(spot, day):
         return redirect(url_for("parking.index"))
     else:
         return redirect(url_for("parking.index"))
+
+
+@bp.route("/accounting")
+@login_required
+def accounting():
+    spots = db.session.scalars(select(ParkingSpot)).all()
+    spotCount = len(list(spots))
+    today = datetime.date.today()
+    occupied = len(list(filter(lambda x: x.is_reserved(today), spots)))
+    occupation = (occupied / spotCount) * 100
+
+    reservations = db.session.scalars(select(Reservation).join(ParkingSpot)).all()
+    revenue = sum(map(lambda x: x.parking_spot.price, reservations))
+
+    return render_template(
+        "pages/accounting.html",
+        title="Accounting",
+        spots=spotCount,
+        occupied=occupied,
+        occupation=occupation,
+        reservations=reservations,
+        revenue=revenue,
+    )
