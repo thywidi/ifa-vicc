@@ -10,9 +10,9 @@ from werkzeug.security import check_password_hash, generate_password_hash
 class CollectionMixin(object):
     @staticmethod
     def to_collection_dict(query):
-        resources = query.all(error_out=False)
+        resources = query.all()
         data = {
-            "items": [item.to_dict() for item in resources.items],
+            "items": [item.to_dict() for item in resources],
         }
         return data
 
@@ -63,7 +63,7 @@ def load_user(id):
     return User.query.get(int(id))
 
 
-class ParkingSpot(db.Model):
+class ParkingSpot(db.Model, CollectionMixin):
     id = db.Column(db.Integer, primary_key=True)
     price = db.Column(db.Float)
     info = db.Column(db.String(256))
@@ -104,7 +104,7 @@ class ParkingSpot(db.Model):
         return f"<Parkingspot {self.id}>"
 
 
-class Reservation(db.Model):
+class Reservation(db.Model, CollectionMixin):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
     parking_spot_id = db.Column(db.Integer, db.ForeignKey("parking_spot.id"))
