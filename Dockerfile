@@ -9,7 +9,7 @@ RUN venv/bin/pip install -r requirements.txt
 
 COPY app app
 COPY migrations migrations
-COPY parking.py config.py boot.sh ./
+COPY parking.py config.py .env boot.sh ./
 RUN chmod a+x boot.sh
 
 ENV FLASK_APP parking.py
