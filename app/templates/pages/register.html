@@ -24,6 +24,15 @@
                             {% endfor %}
                         </div>
                         <div class="form-control mt-3">
+                            {{ form.email.label }}
+                            {{ form.email(size=32) }}
+                            {% for error in form.email.errors %}
+                                <label class="label">
+                                    <span class="text-red-400 label-text-alt">{{ error }}</span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                        <div class="form-control mt-3">
                             {{ form.password.label }}
                             {{ form.password(size=32) }}
                             {% for error in form.password.errors %}

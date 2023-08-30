@@ -102,7 +102,9 @@ class ParkingSpot(db.Model, CollectionMixin):
             "_links": {
                 "self": url_for("api.get_spot", id=self.id),
                 "reservations": url_for("api.get_spot_reservations", id=self.id),
-                "reserved": url_for("api.get_spot_reserved", id=self.id),
+                "reserved": url_for(
+                    "api.get_spot_reserved", id=self.id, date="2023-01-01"
+                ),
             },
         }
         return data

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, EqualTo
+from wtforms.validators import DataRequired, Email, EqualTo
 
 from app.models import User
 
@@ -26,6 +26,11 @@ class RegistrationForm(FlaskForm):
     username = StringField(
         "Username",
         validators=[DataRequired()],
+        render_kw={"class": "input input-bordered"},
+    )
+    email = StringField(
+        "Email",
+        validators=[DataRequired(), Email()],
         render_kw={"class": "input input-bordered"},
     )
     password = PasswordField(
