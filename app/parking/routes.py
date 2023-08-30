@@ -35,7 +35,7 @@ def index():
     )
 
 
-@bp.route("/<date>")
+@bp.route("/parking/<date>")
 @login_required
 def date(date):
     form = BaseForm()

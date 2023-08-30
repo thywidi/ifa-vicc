@@ -5,6 +5,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_apidoc import ApiDoc
 from sqlalchemy import select
 from config import Config
 
@@ -12,6 +13,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
 login.login_view = "auth.login"  # type: ignore
+doc = ApiDoc()
 
 
 def create_app(config=Config):
@@ -42,6 +44,8 @@ def create_app(config=Config):
     from app.api import bp as api_bp
 
     app.register_blueprint(api_bp, url_prefix="/api")
+
+    doc.init_app(app)
 
     if not app.debug and not app.testing:
         if app.config["LOG_TO_STDOUT"]:
