@@ -20,12 +20,14 @@ def client(testApp):
 
 
 class TestUser:
+    @pytest.mark.dependency()
     def test_password_hashing(self, testApp):  # noqa: F811
         u = User(username="susan")  # type: ignore
         u.set_password("cat")
         assert not u.check_password("dog")
         assert u.check_password("cat")
 
+    @pytest.mark.dependency(depends=["TestUser::test_password_hashing"])
     def test_required_form(self, client, testApp):
         response = client.post(
             "/auth/register", data={"username": "flask", "password": "cat"}

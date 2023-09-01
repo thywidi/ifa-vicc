@@ -36,12 +36,14 @@ def client(testApp):
 
 
 class TestParking:
+    @pytest.mark.dependency()
     def test_reserve_model(self, testApp):  # noqa: F811
         today = datetime.date.today()
         spot = ParkingSpot.query.filter_by(id=1).first()
         spot.reserve(today, User.query.filter_by(username="susan").first())
         assert spot.is_reserved(today)
 
+    @pytest.mark.dependency()
     def test_free_model(self, testApp):  # noqa: F811
         today = datetime.date.today()
         spot = ParkingSpot.query.filter_by(id=1).first()
@@ -52,6 +54,12 @@ class TestParking:
         # User should have a reservation which will be cleared
         assert userReservation is not None
 
+    @pytest.mark.dependency(
+        depends=[
+            "TestParking::test_reserve_model",
+            "TestParking::test_free_model",
+        ]
+    )
     def test_reserve_route(self, client, testApp):
         today = datetime.date.today()
         with client:
@@ -60,6 +68,13 @@ class TestParking:
         with testApp.app_context():
             assert Reservation.query.filter_by(date=today).first() is not None
 
+    @pytest.mark.dependency(
+        depends=[
+            "TestParking::test_reserve_model",
+            "TestParking::test_free_model",
+            "TestParking::test_reserve_route",
+        ]
+    )
     def test_free_route(self, client, testApp):
         today = datetime.date.today()
         with client:
