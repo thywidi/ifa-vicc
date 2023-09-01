@@ -41,6 +41,7 @@ def accountingFixture():
 class TestAccounting:
     @pytest.mark.dependency()
     def test_spot_count(self, accountingFixture):  # noqa: F811
+        """There should be 3 parking spots with the given fixture"""
         spots = db.session.scalars(select(ParkingSpot)).all()
         spotCount = len(list(spots))
 
@@ -48,6 +49,7 @@ class TestAccounting:
 
     @pytest.mark.dependency()
     def test_no_future_reservations(self, accountingFixture):  # noqa: F811
+        """Future reservations should not be counted in accounting"""
         today = datetime.date.today()
         reservations = db.session.scalars(
             select(Reservation)
@@ -64,6 +66,7 @@ class TestAccounting:
         ]
     )
     def test_occupied(self, accountingFixture):  # noqa: F811
+        """Test accounting calculations"""
         spots = db.session.scalars(select(ParkingSpot)).all()
         spotCount = len(list(spots))
         today = datetime.date.today()
