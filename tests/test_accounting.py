@@ -68,6 +68,7 @@ class TestAccounting:
             response = client.get(
                 "/api/spots/1", headers={"Authorization": f"Bearer {token}"}
             )
+
             assert response.status_code == 200
             assert response.json["price"] == 5.0
             assert response.json["id"] == 1
