@@ -70,16 +70,18 @@ def create_app(config=Config):
         app.logger.setLevel(logging.INFO)
         app.logger.info("App startup")
 
-    with app.app_context():
-        # Create all database tables
-        db.create_all()
+    # In a testing environment we want full control over the database
+    if not app.testing:
+        with app.app_context():
+            # Create all database tables
+            db.create_all()
 
-        # TODO: This is to handle currently out of scope admin functionality.
-        if not db.session.execute(select(models.ParkingSpot)).first():
-            # Create default parking spots
-            for x in range(1, 13):
-                spot = models.ParkingSpot(id=x, price=5, info=f"Spot {x}")
-                db.session.add(spot)
-            db.session.commit()
+            # TODO: This is to handle currently out of scope admin functionality.
+            if not db.session.execute(select(models.ParkingSpot)).first():
+                # Create default parking spots
+                for x in range(1, 13):
+                    spot = models.ParkingSpot(id=x, price=5, info=f"Spot {x}")
+                    db.session.add(spot)
+                db.session.commit()
 
     return app

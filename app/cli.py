@@ -8,6 +8,6 @@ def register(app):
         pass
 
     @docs.command()
-    def api():
+    def generate():
         """Compile apidoc"""
         GenerateApiDoc("./app", "app/static/docs").run()

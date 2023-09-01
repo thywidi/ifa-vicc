@@ -93,7 +93,7 @@ def reserve(spot, day):
             )
             return redirect(url_for("parking.index"))
 
-        spot.reserve(day, current_user)
+        spot.reserve(dayDate, current_user)
         flash(f"Spot {spot} reserved!")
         db.session.commit()
 
@@ -119,7 +119,7 @@ def free(spot, day):
             flash(f"Spot {spot} not found.")
             return redirect(url_for("parking.index"))
 
-        userReservation = spot.free(day, current_user)
+        userReservation = spot.free(dayDate, current_user)
         if userReservation is not None:
             db.session.delete(userReservation)
             db.session.commit()
