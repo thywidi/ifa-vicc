@@ -38,7 +38,7 @@ def client(testApp):
 class TestParking:
     @pytest.mark.dependency()
     def test_reserve_model(self, testApp):  # noqa: F811
-        """Test reserve method on ParkingSpot model"""
+        """Unit Test reserve method on ParkingSpot model"""
         today = datetime.date.today()
         spot = ParkingSpot.query.filter_by(id=1).first()
         spot.reserve(today, User.query.filter_by(username="susan").first())
@@ -46,7 +46,7 @@ class TestParking:
 
     @pytest.mark.dependency()
     def test_free_model(self, testApp):  # noqa: F811
-        """Test free method on ParkingSpot model"""
+        """Unit Test free method on ParkingSpot model"""
         today = datetime.date.today()
         spot = ParkingSpot.query.filter_by(id=1).first()
         spot.reserve(today, User.query.filter_by(username="susan").first())
@@ -63,7 +63,7 @@ class TestParking:
         ]
     )
     def test_reserve_route(self, client, testApp):
-        """Test reserving a spot through the route"""
+        """Integration Test reserving a spot through the route"""
         today = datetime.date.today()
         with client:
             response = client.post(f"/reserve/1/{today.isoformat()}")
@@ -79,7 +79,7 @@ class TestParking:
         ]
     )
     def test_free_route(self, client, testApp):
-        """Test freeing a spot through the route"""
+        """Integration Test freeing a spot through the route"""
         today = datetime.date.today()
         with client:
             response = client.post(f"/reserve/1/{today.isoformat()}")
@@ -89,6 +89,5 @@ class TestParking:
         with client:
             response = client.post(f"/free/1/{today.isoformat()}")
         assert response.status_code == 302
-
         with testApp.app_context():
             assert Reservation.query.filter_by(date=today).first() is None

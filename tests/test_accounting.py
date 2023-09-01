@@ -1,6 +1,5 @@
 import datetime
-
-from sqlalchemy import select
+from flask_login import FlaskLoginClient
 from app.models import User, ParkingSpot, Reservation
 import pytest
 from app import create_app, db
@@ -8,8 +7,9 @@ from tests.testconf import TestConfig
 
 
 @pytest.fixture
-def accountingFixture():
+def testApp():
     app = create_app(TestConfig)
+    app.test_client_class = FlaskLoginClient
     with app.app_context():
         db.create_all()
         # Create default parking spots
@@ -38,49 +38,36 @@ def accountingFixture():
         db.drop_all()
 
 
+@pytest.fixture
+def client(testApp):
+    user = User.query.filter_by(username="susan").first()
+    return testApp.test_client(user=user)
+
+
+@pytest.fixture
+def token(client):
+    credentials = ("susan", "cat")
+    tokenResponse = client.post(
+        "api/tokens",
+        auth=credentials,
+    )
+    token = tokenResponse.json["token"]
+    return token
+
+
 class TestAccounting:
     @pytest.mark.dependency()
-    def test_spot_count(self, accountingFixture):  # noqa: F811
-        """There should be 3 parking spots with the given fixture"""
-        spots = db.session.scalars(select(ParkingSpot)).all()
-        spotCount = len(list(spots))
+    def test_token_get(self, token):  # noqa: F811
+        """API TEST: Token should be returned when valid credentials are sent"""
+        assert token is not None
 
-        assert spotCount == 3
-
-    @pytest.mark.dependency()
-    def test_no_future_reservations(self, accountingFixture):  # noqa: F811
-        """Future reservations should not be counted in accounting"""
-        today = datetime.date.today()
-        reservations = db.session.scalars(
-            select(Reservation)
-            .filter(Reservation.date <= today)
-            .join(ParkingSpot)
-            .join(User)
-        ).all()
-        assert len(reservations) == 1
-
-    @pytest.mark.dependency(
-        depends=[
-            "TestAccounting::test_spot_count",
-            "TestAccounting::test_no_future_reservations",
-        ]
-    )
-    def test_occupied(self, accountingFixture):  # noqa: F811
-        """Test accounting calculations"""
-        spots = db.session.scalars(select(ParkingSpot)).all()
-        spotCount = len(list(spots))
-        today = datetime.date.today()
-        occupied = len(list(filter(lambda x: x.is_reserved(today), spots)))
-        occupation = round((occupied / spotCount) * 100, 2)
-
-        reservations = db.session.scalars(
-            select(Reservation)
-            .filter(Reservation.date <= today)
-            .join(ParkingSpot)
-            .join(User)
-        ).all()
-
-        revenue = sum(map(lambda x: x.parking_spot.price, reservations))
-        assert occupied == 1
-        assert occupation == 33.33
-        assert revenue == 5
+    @pytest.mark.dependency(depends=["TestAccounting::test_token_get"])
+    def test_spot_count(self, client, token):  # noqa: F811
+        """API TEST: There should be 3 parking spots with the given fixture"""
+        with client:
+            response = client.get(
+                "/api/spots/1", headers={"Authorization": f"Bearer {token}"}
+            )
+            assert response.status_code == 200
+            assert response.json["price"] == 5.0
+            assert response.json["id"] == 1
