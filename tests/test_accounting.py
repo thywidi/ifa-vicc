@@ -62,13 +62,16 @@ class TestAccounting:
         assert token is not None
 
     @pytest.mark.dependency(depends=["TestAccounting::test_token_get"])
-    def test_spot_count(self, client, token):  # noqa: F811
-        """API TEST: There should be 3 parking spots with the given fixture"""
+    def test_accountint_calc(self, client, token):  # noqa: F811
+        """API TEST: Accounting should be calculated correctly"""
         with client:
             response = client.get(
-                "/api/spots/1", headers={"Authorization": f"Bearer {token}"}
+                "/api/accounting", headers={"Authorization": f"Bearer {token}"}
             )
-
             assert response.status_code == 200
-            assert response.json["price"] == 5.0
-            assert response.json["id"] == 1
+
+            data = response.json
+            assert data["spots"] == 3
+            assert data["occupied"] == 1
+            assert data["occupation"] == 0.33
+            assert data["revenue"] == 5
