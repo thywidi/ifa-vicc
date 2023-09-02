@@ -98,7 +98,6 @@ class ParkingSpot(db.Model, CollectionMixin):
             "id": self.id,
             "price": self.price,
             "info": self.info,
-            "reservation_count": self.reservations.count(),
             "_links": {
                 "self": url_for("api.get_spot", id=self.id),
                 "reservations": url_for("api.get_spot_reservations", id=self.id),

@@ -54,8 +54,8 @@ Follow these steps to set up and run the Flask application in a virtual environm
    On macOS and Linux:
 
    ```bash
-   python3 -m venv venv
-   source venv/bin/activate
+   python3 -m venv .venv
+   source .venv/bin/activate
    ```
 
    On winows, use WSL
