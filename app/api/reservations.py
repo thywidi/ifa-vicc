@@ -16,7 +16,7 @@ def get_reservation(id):
     @apiParam {Number}      id              The reservations's id
 
     @apiExample Example usage:
-    curl -i http://127.0.0.1:500/api/reservations/1
+    curl -i http://165.22.31.195/api/reservations/1
 
     @apiSuccess {Number}    id              The reservation's id.
     @apiSuccess {String}    date        The reservation's date.
@@ -39,7 +39,7 @@ def get_reservations():
     @apiGroup Reservations
 
     @apiExample Example usage:
-    curl -i http://127.0.0.1:500/api/reservations
+    curl -i http://165.22.31.195/api/reservations
 
     @apiSuccess {Object}    reservations         Reservations
     @apiSuccess {Number}    reservations.id              The reservation's id.
@@ -67,7 +67,7 @@ def get_reservation_user(id):
     @apiParam {Number}      id              The reservations's id
 
     @apiExample Example usage:
-    curl -i http://127.0.0.1:500/api/get_reservation_user/1
+    curl -i http://165.22.31.195/api/get_reservation_user/1
 
     @apiSuccess {Number}    id              The user's id.
     @apiSuccess {String}    username              The user's username.
@@ -89,7 +89,7 @@ def get_reservation_spot(id):
     @apiParam {Number}      id              The reservations's id
 
     @apiExample Example usage:
-    curl -i http://127.0.0.1:500/api/get_reservation_spot/1
+    curl -i http://165.22.31.195/api/get_reservation_spot/1
 
     @apiSuccess {Number}    id              The spot's id.
     @apiSuccess {String}    info        The spot's info text.

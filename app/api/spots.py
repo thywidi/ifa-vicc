@@ -17,7 +17,7 @@ def get_spot(id):
     @apiParam {Number}      id              The spots's id
 
     @apiExample Example usage:
-    curl -i http://127.0.0.1:500/api/spots/1
+    curl -i http://165.22.31.195/api/spots/1
 
     @apiSuccess {Number}    id              The spot's id.
     @apiSuccess {String}    info        The spot's info text.
@@ -39,7 +39,7 @@ def get_spots():
     @apiGroup Spots
 
     @apiExample Example usage:
-    curl -i http://127.0.0.1:500/api/spots
+    curl -i http://165.22.31.195/api/spots
 
     @apiSuccess {Object}    spots                 The spot data
     @apiSuccess {Number}    spots.id              The spot's id.
@@ -64,7 +64,7 @@ def get_spot_reservations(id):
     @apiGroup Spots
 
     @apiExample Example usage:
-    curl -i http://127.0.0.1:500/api/spots/1/get_spot_reservations
+    curl -i http://165.22.31.195/api/spots/1/get_spot_reservations
 
     @apiParam {Number}      id              The spots's id
 
@@ -85,7 +85,7 @@ def get_spot_reserved(id, date):
     @apiGroup Spots
 
     @apiExample Example usage:
-    curl -i http://127.0.0.1:500/api/spots/1/get_spot_reserved
+    curl -i http://165.22.31.195/api/spots/1/get_spot_reserved
 
     @apiParam {Number}      id              The spots's id
 

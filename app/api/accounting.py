@@ -17,7 +17,7 @@ def get_accounting():
     @apiGroup Accounting
 
     @apiExample Example usage:
-    curl -i http://127.0.0.1:500/api/accounting
+    curl -i http://165.22.31.195/api/accounting
 
     @apiSuccess {Number}    spots                Total Spots
     @apiSuccess {Number}    occupied             Occupied spots count
